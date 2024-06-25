@@ -1,0 +1,16 @@
+{
+    "id": "kuaidi-jijian",
+    "name": "低价寄快递平台模板",
+    "displayName": "低价寄快递平台模板",
+    "version": "1.0.0",
+    "description": "2023年蓝海项目，低价寄快递小程序前端模板，实际商用版，对接了低价快递渠道，运营平台赚取差价，支持市面上全部主流快递",
+    "keywords": [
+        "寄快递,快递"
+    ],
+    "dcloudext": {
+        "category": [
+            "uni-app前端模板",
+            "uni-app前端项目模板"
+        ]
+    }
+}

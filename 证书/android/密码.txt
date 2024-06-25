@@ -1,0 +1,33 @@
+keytool -genkey -alias smamtest -keyalg RSA -keysize 2048 -validity 36500 -keystore smamtest.keystore
+
+smam123456
+
+
+keytool -list -v -keystore E:\Project\上门按摩\上门按摩用户端\证书\android\smamtest.keystore
+
+
+别名: smamtest
+创建日期: 2022-12-18
+条目类型: PrivateKeyEntry
+证书链长度: 1
+证书[1]:
+所有者: CN=zs, OU=sm, O=sm, L=gz, ST=gd, C=cn
+发布者: CN=zs, OU=sm, O=sm, L=gz, ST=gd, C=cn
+序列号: 5f0cdf19
+有效期开始日期: Sun Dec 18 00:34:35 CST 2022, 截止日期: Tue Nov 24 00:34:35 CST 2122
+证书指纹:
+         MD5: 60:25:4C:2E:C2:FC:FA:58:EC:02:00:97:2A:AB:B2:15
+         SHA1: C2:EC:A8:79:67:31:67:DC:64:77:0E:46:3F:07:0B:E3:D3:8E:EC:6C
+         SHA256: 84:30:D4:56:C8:4B:00:37:E4:A1:BC:97:C1:51:AA:C1:B8:76:6A:0D:25:EF:8E:8E:AF:90:D6:8F:08:18:BD:B2
+         签名算法名称: SHA256withRSA
+         版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 87 ED 4D 7B 1A C6 F8 D7   65 B6 EB BB 02 1D A0 C0  ..M.....e.......
+0010: 95 E3 9F 65                                        ...e
+]
+]
