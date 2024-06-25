@@ -151,9 +151,20 @@
 				that.$http.get('courierOrder/addressAnalysis', {
 					text: that.detail
 				}, function(res) {
-					console.log('解析结果', res)
+					let data = JSON.parse(res.data);
+					console.log('解析结果', data)
+					if (data != '' && data.detail != '') {
+						that.prov = data.province;
+						that.city = data.city;
+						that.area = data.county;
+						that.values.find(_ => _.key == 'adName').value = data.person;
+						that.values.find(_ => _.key == 'adDetail').value = data.province+"/"+data.city+"/"+data.county;
+						that.values.find(_ => _.key == 'adHouseNumber').value = data.detail;
+						that.values.find(_ => _.key == 'adMobile').value = data.phonenum;
+						uni.hideLoading();
+					}
+					that.reason = res.Success ? '' : res.Reason;
 					if (res.StatusCode == 'success') {
-						that.prePage().getList();
 						that.$uti.toBack();
 					} else {
 						that.$uti.alert(res.Message);
@@ -179,30 +190,38 @@
 				// }
 
 			},
-			onSubmit() {
-				var that = this;
-				that.$http.post('User/AddOrUpdateAddress', {
-					adId: that.id,
-					userGuid: that.$us.getId(),
-					adMobile: that.values.find(_ => _.key == 'adMobile').value,
-					adName: that.values.find(_ => _.key == 'adName').value,
-					adProvince: that.prov,
-					adCity: that.city,
-					adArea: that.area,
-					adDetail: that.values.find(_ => _.key == 'adDetail').value,
-					adHouseNumber: that.values.find(_ => _.key == 'adHouseNumber').value,
-					adLongitude: that.lng,
-					adLatitude: that.lat
-				}, function(res) {
-					if (res.StatusCode == 1) {
-						that.prePage().getList();
-						that.$uti.toBack();
-					} else {
-						that.$uti.alert(res.Message);
-					}
+			to(url) {
+				console.log('跳转', url)
+				uni.navigateTo({
+					url: url
 				})
 			},
+			onSubmit() {
+				var that = this;
+				that.$uti.toBack();
+				// that.$http.post('User/AddOrUpdateAddress', {
+				// 	adId: that.id,
+				// 	userGuid: that.$us.getId(),
+				// 	adMobile: that.values.find(_ => _.key == 'adMobile').value,
+				// 	adName: that.values.find(_ => _.key == 'adName').value,
+				// 	adProvince: that.prov,
+				// 	adCity: that.city,
+				// 	adArea: that.area,
+				// 	adDetail: that.values.find(_ => _.key == 'adDetail').value,
+				// 	adHouseNumber: that.values.find(_ => _.key == 'adHouseNumber').value,
+				// 	adLongitude: that.lng,
+				// 	adLatitude: that.lat
+				// }, function(res) {
+				// 	if (res.StatusCode == 1) {
+				// 		that.prePage().getList();
+				// 		that.$uti.toBack();
+				// 	} else {
+				// 		that.$uti.alert(res.Message);
+				// 	}
+				// })
+			},
 			confirmLoc(res) {
+				console.log("aaaa"+res)
 				this.showMap = false;
 				this.lat = res.lat;
 				this.lng = res.lng;
