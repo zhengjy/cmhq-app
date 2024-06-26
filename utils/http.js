@@ -55,6 +55,57 @@ function request(method, url, data, func, title) {
 	})
 }
 
+function post_request(method, url, data, func, title) {
+
+	// let baseUrl =process.env.NODE_ENV === 'development' ? cfg['httpUrl'] :'http://localhost:3000'
+	// console.log('baseUrl',baseUrl)
+
+	if (cfg.debug) {
+		console.log('原请求', data);
+	}
+
+	if (title) {
+		uni.showLoading({
+			title: title
+		})
+	}
+
+	uni.request({
+		url: cfg['httpUrl'] + url,
+		method: method,
+		// withCredentials: true,
+		header: {
+			'Content-Type': 'application/json;charset=UTF-8'
+		},
+		data: data,
+		success(res) {
+			if (title) {
+				uni.hideLoading();
+			}
+			if (cfg.debug) {
+				console.log('原结果', res);
+			}
+
+			if (res && res.statusCode == 200) {
+				return typeof func == "function" && func(res.data);
+			} else {
+				return typeof func == "function" && func({
+					statusCode: 401,
+					msg: '数据格式错误',
+					data: {}
+				})
+			}
+		},
+		fail(err) {
+			return typeof func == "function" && func({
+				statusCode: 400,
+				msg: '请求异常',
+				data: {}
+			})
+		}
+	})
+}
+
 function isJSON(str) {
 	if (typeof str == 'string') {
 		try {
@@ -82,7 +133,7 @@ export default {
 		}, title);
 	},
 	post(url, data, func, title) {
-		request('POST', url, data, function(res) {
+		post_request('POST', url, data, function(res) {
 			return typeof func == "function" && func(res)
 		}, title);
 	}

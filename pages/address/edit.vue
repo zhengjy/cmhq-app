@@ -190,15 +190,23 @@
 				// }
 
 			},
-			to(url) {
-				console.log('跳转', url)
-				uni.navigateTo({
-					url: url
-				})
-			},
 			onSubmit() {
 				var that = this;
 				that.$uti.toBack();
+				var that = this;
+				
+				let map ={};
+				map.province = that.prov;
+				map.city = that.city;
+				map.area = that.area;
+				map.address = that.values.find(_ => _.key == 'adHouseNumber').value;
+				map.mobile = that.values.find(_ => _.key == 'adMobile').value;
+				map.name = that.values.find(_ => _.key == 'adName').value;
+				
+				var name = this.type == 0 ? 'seller' : this.type == 1 ? 'query' : 'none';
+				uni.setStorageSync(name, map);
+				this.prePage().reloadAddress(name);
+				this.$uti.toBack();
 				// that.$http.post('User/AddOrUpdateAddress', {
 				// 	adId: that.id,
 				// 	userGuid: that.$us.getId(),

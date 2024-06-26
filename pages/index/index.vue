@@ -15,10 +15,10 @@
 					</view>
 					<view style="margin-left: 10rpx;width:80%;">
 						<view class="user-info">
-							{{seller.adName || '暂无地址'}} {{seller.adMobile || ''}}
+							{{seller.name || '暂无地址'}} {{seller.mobile || ''}}
 						</view>
 						<view class="address-info">
-							{{seller.adProvince || '点击选择地址'}}{{seller.adArea || ''}}{{seller.adDetail || ''}}{{seller.adHouseNumber || ''}}
+							{{seller.province || '点击选择地址'}}{{seller.city || ''}}{{seller.area || ''}}{{seller.address || ''}}{{seller.mobile || ''}}
 						</view>
 					</view>
 					<view>
@@ -36,7 +36,7 @@
 
 			</view>
 			<view style="display: flex;">
-				<view class="address-view flex-between items-center" style="display: flex;" @click="$uti.toPage('/pages/address/edit',{type:0})">
+				<view class="address-view flex-between items-center" style="display: flex;" @click="$uti.toPage('/pages/address/edit',{type:1})">
 					<view>
 						<view class="address-tag" style="background: #3c9cff;color:#fff;">
 							收
@@ -44,17 +44,17 @@
 					</view>
 					<view style="margin-left: 10rpx;width:80%;">
 						<view class="user-info">
-							{{query.adName || '暂无地址'}} {{query.adMobile || ''}}
+							{{query.name || '暂无地址'}} {{query.mobile || ''}}
 						</view>
 						<view class="address-info">
-							{{query.adProvince || '点击选择地址'}}{{query.adArea || ''}}{{query.adDetail || ''}}{{query.adHouseNumber || ''}}
+							{{query.province || '点击选择地址'}}{{query.city || ''}}{{query.area || ''}}{{query.address || ''}}{{query.mobile || ''}}
 						</view>
 					</view>
 					<view>
 						<u-icon name="arrow-right" size="16"></u-icon>
 					</view>
 				</view>
-				<view class="" style="display: flex;width: 30%;"  @click="$uti.toPage('/pages/address/list',{type:0})">
+				<view class="" style="display: flex;width: 30%;"  @click="$uti.toPage('/pages/address/list',{type:1})">
 					<view style="border-left: 1px solid #999; height: 20px; margin: 10px;">
 					</view>
 					<view class="user-info" style="margin-top:10px; ">地址薄</view>
@@ -87,7 +87,7 @@
 						</u-number-box>
 					</view>
 				</u-cell>
-				<!-- <u-cell :border="false" title="体积" :customStyle="{'padding':'20rpx 0rpx;'}">
+				<u-cell :border="false" title="体积" :customStyle="{'padding':'20rpx 0rpx;'}">
 					<view slot="right-icon">
 						<view class="flex-center items-center" style="font-size: 24rpx;color:indianred;">
 							长(CM)
@@ -103,12 +103,12 @@
 								v-model="height" inputAlign="center"></u-input>
 						</view>
 					</view>
-				</u-cell> -->
+				</u-cell> 
 				<!-- <u-cell :border="false" title="优惠券" :customStyle="{'padding':'20rpx 0rpx;'}">
 					<view slot="right-icon">
 						<u-icon name="arrow-right" label="您有1张优惠券可选" labelPos="left" size="16"></u-icon>
 					</view>
-				</u-cell> -->
+				</u-cell>-->
 			</u-cell-group>
 			<view class="flex-center"
 				style="width:96%;margin:0 auto;color:indianred;font-size: 26rpx;border-radius: 20rpx;margin-top: 20rpx;padding:10rpx 0rpx;">
@@ -141,6 +141,9 @@
 					</view>
 					<view slot="label" style="font-size: 26rpx;color:#999;margin-left: 10rpx;">
 						预估金额：<label style="color:indianred;">￥{{item.totalFee}}</label>
+					</view>
+					<view slot="label" style="font-size: 26rpx;color:#999;margin-left: 10rpx;">
+						<label style="color:indianred;">{{item.info}}</label>
 					</view>
 					<view slot="right-icon">
 						<u-tag text="下单" size="mini" type="primary" @click="createOrder(item.shipperCode)"></u-tag>
@@ -214,7 +217,9 @@
 		methods: {
 			init() {
 				var that = this;
-				that.isLogin = that.$us.checkLogin();
+				that.isLogin = true;
+				
+				// that.isLogin = that.$us.checkLogin();
 				that.file = (uni.getStorageSync('filePicker') || '请选择');
 				if (that.isLogin) {
 					that.reloadAddress('seller');
@@ -246,20 +251,20 @@
 				}
 				this[name] = uni.getStorageSync(name) || [];
 
-				if (this.seller && this.seller.id && this.query && this.query.id) {
-					that.$http.post('Order/AreaVerification', {
-						r_ProvinceName: that.query.adProvince,
-						r_CityName: that.query.adCity,
-						r_ExpAreaName: that.query.adArea,
-						r_Address: that.query.adDetail + that.query.adHouseNumber,
-						s_ProvinceName: that.seller.adProvince,
-						s_CityName: that.seller.adCity,
-						s_ExpAreaName: that.seller.adArea,
-						s_Address: that.seller.adProvince + that.seller.adHouseNumber,
-					}, function(data) {
-						var res = JSON.parse(data.Data);
-						that.reason = res.Success ? '' : res.Reason;
-					})
+				if (this.seller &&  this.query ) {
+					// that.$http.post('Order/AreaVerification', {
+					// 	r_ProvinceName: that.query.adProvince,
+					// 	r_CityName: that.query.adCity,
+					// 	r_ExpAreaName: that.query.adArea,
+					// 	r_Address: that.query.adDetail + that.query.adHouseNumber,
+					// 	s_ProvinceName: that.seller.adProvince,
+					// 	s_CityName: that.seller.adCity,
+					// 	s_ExpAreaName: that.seller.adArea,
+					// 	s_Address: that.seller.adProvince + that.seller.adHouseNumber,
+					// }, function(data) {
+					// 	var res = JSON.parse(data.Data);
+					// 	that.reason = res.Success ? '' : res.Reason;
+					// })
 
 					that.getEstimatedFreight();
 				}
@@ -272,29 +277,25 @@
 			getEstimatedFreight() {
 				var that = this;
 				that.logList = [];
-				if (that.seller && that.seller.id && that.query && that.query.id) {
-					that.$http.post('Order/EstimatedFreight', {
-						userGuid: that.$us.getId(),
-						Weight: that.weight,
-						r_CityName: that.query.adCity,
-						r_ProvinceName: that.query.adProvince,
-						s_ProvinceName: that.seller.adProvince,
-						s_CityName: that.seller.adCity
+				if (that.seller && that.query ) {
+					that.$http.post('courierOrder/getCourierFreightCharge',{
+						fromProv: that.seller.province,
+						fromCity: that.seller.city,
+						fromArea: that.seller.area,
+						fromAddress: that.seller.address,
+						toProv: that.query.province,
+						toCity: that.query.city,
+						toArea: that.query.area,
+						toAddress: that.query.address,
+						weight: that.weight
 					}, function(res) {
-						if (res.StatusCode == 1) {
-							//console.log('getEstimatedFreight', res.Data)
-							res.Data.forEach(item => {
-								var data = that.$cfg.logList.find(_ => _.key == item.shipperCode);
-								if (data) {
-									item.icon = data.icon;
-									item.name = data.name;
-									that.logList.push(item);
-								}
-							})
+						console.log('getEstimatedFreight', res)
+						if (res.code == 'success') {
+							let item ={ "totalFee": res.data.totalPrice, "name": '京东',"info" :res.data.info, "icon":'/static/kuaidi/st.jpg' }
+							that.logList.push(item);
 						} else {
 							that.$uti.alert(res.Message);
 						}
-						console.log('getEstimatedFreight', that.logList)
 					}, '加载中...')
 				}
 			},
@@ -311,7 +312,7 @@
 					return;
 				}
 
-				if (this.seller && this.seller.id && this.query && this.query.id) {
+				if (this.seller  && this.query ) {
 					that.$http.post('Order/PayOrder', {
 						userGuid: that.$us.getId(),
 						orShipperCode: code,

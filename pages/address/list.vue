@@ -5,13 +5,13 @@
 				<view class="w94 flex-between items-center">
 					<view style="border-bottom: 2rpx solid #eee;padding:20rpx 0rpx;width:80%;"
 						@click="checkItem(item)">
-						<view>{{item.adCity}}{{item.adArea}}</view>
+						<view>{{item.province}}{{item.city}}</view>
 						<view class="flex-between items-center" style="width:100%;">
 							<label
-								style="font-size: 30rpx;font-weight: bold;">{{item.adArea}}{{item.adDetail}}{{item.adHouseNumber}}</label>
+								style="font-size: 30rpx;font-weight: bold;">{{item.area}}{{item.address}}</label>
 							<!-- <u-icon name="edit-pen" size="30" color="#999"></u-icon> -->
 						</view>
-						<view>{{item.adName}}({{item.adMobile.replace(item.adMobile.substr(3,4),'****')}})</view>
+						<view>{{item.name}}({{item.mobile.replace(item.mobile.substr(3,4),'****')}})</view>
 						<!-- <view class="w94 flex-end">
 					<u-tag type="error" text="删除" size="mini" @click.stop="delAddress(item)">
 					</u-tag>
@@ -107,15 +107,17 @@
 			getList() {
 				var that = this;
 				that.list = [];
-				that.$http.post('User/AddressList', {
-					userGuid: that.$us.getId()
+				that.$http.get('ziaddress/list', {
+					companyId: 90,
+					pageNo: 1,
+					pageSize: 20
 				}, function(res) {
-					if (res.StatusCode == 1) {
-						res.Data.forEach(item => {
+					if (res.code == 'success') {
+						console.log('地址列表', res.data)
+						res.data.items.forEach(item => {
 							item.show = false;
 							that.list.push(item);
 						})
-						console.log('地址列表', that.list)
 					}
 				})
 			},
