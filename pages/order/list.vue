@@ -9,14 +9,14 @@
 			<view class="template-view" v-for="(item,index) in dataList" :key="index">
 
 				<view class="flex-between items-center">
-					<view class="font-def">订单号：{{item.orNumber}}</view>
-					<view class="font-def">{{item.orShipperName}}</view>
+					<view class="font-def">快递单号：{{item.courierCompanyWaybillNo}}</view>
+					<view class="font-def">{{item.courierCompanyCode}}快递{{item.id}}</view>
 				</view>
 
 				<view class="flex-around items-center" style="margin-top: 20rpx;">
 					<view>
-						<view class="address-city">{{item.orSCityName}}</view>
-						<view class="address-name">{{item.orSName}}</view>
+						<view class="address-city">{{item.fromCity}}</view>
+						<view class="address-name">{{item.fromName}}</view>
 					</view>
 					<view>
 						<view style="text-align: center;">
@@ -27,22 +27,20 @@
 						</view>
 					</view>
 					<view>
-						<view class="address-city">{{item.orRCityName}}</view>
-						<view class="address-name">{{item.orRName}}</view>
+						<view class="address-city">{{item.toCity}}</view>
+						<view class="address-name">{{item.toName}}</view>
 					</view>
 				</view>
 				<view class="flex-start items-center font-def" style="margin-top: 20rpx;">
 					下单时间：{{$uti.dateFormat(item.createTime,'yyyy-MM-dd hh:mm:ss')}}
 				</view>
 				<view class="flex-start items-center font-def" style="margin-top: 10rpx;">
-					支付金额：{{item.orPayMoney}}
+					预估费用：{{item.estimatePrice}} | 实际费用：{{item.price}}
 				</view>
-				<view v-if="item.orLogisticsNumber" class="flex-start items-center font-def" style="margin-top: 10rpx;">
-					快递单号：{{item.orLogisticsNumber}}
-				</view>
+				
 				<view class="flex-end items-center">
 					<view class="flex-end" style="width:50%;">
-						<u-button v-if="item.state==301 || item.state==2 || item.state==3" @click="traces(item)"
+						<u-button  @click="traces(item)"
 							type="info" plain text="物流信息"
 							:customStyle="{'height':'60rpx','width':'180rpx','margin':'0'}" shape="circle">
 						</u-button>
@@ -74,7 +72,7 @@
 </template>
 
 <script>
-	import login from '../../components/login/login.vue'
+	import login from '../../pages/login/login.vue'
 	export default {
 		components: {
 			login
@@ -83,20 +81,23 @@
 			return {
 				isLogin: false,
 				tabList: [{
-						name: '全部',
-						state: '1,-2,-1,120,102,103,104,301,2,3'
+						name: '全部'
 					},
 					{
-						name: '已付款',
-						state: '1,120,102'
+						name: '已取件',
+						orderState: '1,2'
 					},
 					{
-						name: '已接单',
-						state: '103,104,301,2,3'
+						name: '运输中',
+						wuliuState:'1,2'
 					},
 					{
-						name: '已退款',
-						state: '-2,-1'
+						name: '已完成',
+						wuliuState: '3'
+					},
+					{
+						name: '已取消',
+						isCancel: '1'
 					}
 				],
 				current: 0,
@@ -164,15 +165,26 @@
 			},
 			traces(item) {
 				var that = this;
-				if (!item.orTraces) {
-					that.$uti.alert('没有物流信息');
-					return;
-				}
-
-				var json = JSON.parse(item.orTraces);
-				uni.setStorageSync('orTraces', json);
-				that.$uti.toPage('/pages/order/logistics', {})
-				console.log('物流信息', json)
+				
+				
+				that.$http.get('courierOrder/queryCourierTrack', {
+					id: item.id
+				}, function(res) {
+					if (res.code == 'success') {
+						
+						
+						uni.setStorageSync('orTraces', res.data);
+						that.$uti.toPage('/pages/order/logistics', {})
+						console.log('物流信息', res.data)
+					} else {
+						that.$uti.alert(res.Message);
+						that.isload = false;
+						that.status = 'nomore';
+					}
+				})
+				
+				
+				
 			},
 			cancelOrder(item) {
 				var that = this;
@@ -214,28 +226,30 @@
 				}
 				that.status = 'loading';
 
-				that.$http.post('Order/OrderList', {
-					userGuid: that.$us.getId(),
-					state: that.tabList[that.current].state,
-					pageIndex: that.page,
+				that.$http.get('courierOrder/list', {
+					orderState: that.tabList[that.current].orderState,
+					wuliuState: that.tabList[that.current].wuliuState,
+					isCancel: that.tabList[that.current].isCancel,
+					pageNo: that.page,
 					pageSize: that.rows
 				}, function(res) {
-					if (res.StatusCode == 1) {
-						if (that.page * 10 < res.Data.TotalNum) {
+					
+					if (res.code == 'success') {
+						if (that.page * 10 < res.data.total) {
 							that.status = 'loadmore';
 							that.page++;
 						} else {
 							that.isload = false;
 							that.status = 'nomore';
 						}
-
-						res.Data.Result.forEach(item => {
+						console.info("courierOrder ",res.data.items)
+						res.data.items.forEach(item => {
 							item.statusText = '';
-							item.statusText = that.getStatus(item.state);
+							item.statusText = that.getStatus(item.orderState,item.wuliuState);
 
-							var name = that.$cfg.logList.find(_ => _.key == item.orShipperCode);
-							if (name && name.name)
-								item.orShipperName = name.name;
+							// var name = that.$cfg.logList.find(_ => _.key == 'SF');
+							// if (name && name.name)
+							// 	item.orShipperName = name.name;
 
 							that.dataList.push(item);
 						})
@@ -247,49 +261,43 @@
 					}
 				})
 			},
-			getStatus(text) {
-				var status = '未知状态';
-				switch (text.toString()) {
-					case '0':
-						status = '待支付'
-						break;
-					case '1':
-						status = '待分配'
-						break;
-					case '-2':
-						status = '支付失败'
-						break;
-					case '-1':
-						status = '已取消'
-						break;
-					case '99':
-						status = '调度异常'
-						break;
-					case '120':
-						status = '待接单'
-						break;
-					case '102':
-						status = '分配网点'
-						break;
-					case '103':
-						status = '分配快递员'
-						break;
-					case '104':
-						status = '待取件'
-						break;
-					case '301':
-						status = '待揽件'
-						break;
-					case '2':
+			getStatus(orderState,wuliuState) {
+				var status = '';
+				switch (wuliuState) {
+					case 1:
 						status = '运输中'
 						break;
-					case '3':
+					case 2:
+						status = '派件中'
+						break;
+					case 3:
 						status = '已签收'
 						break;
-					default:
-						status = '未知状态'
+					case 4:
+						status = '异常'
+						break;
+					
+				}
+				if (status != '') {
+					return status;
+				}
+				
+				switch (orderState) {
+					case 0:
+						status = '待取件'
+						break;
+					case 1:
+						status = '已调派'
+						break;
+					case 2:
+						status = '已取件'
+						break;
+					case 3:
+						status = '已取消'
 						break;
 				}
+				
+				
 				return status;
 			}
 		},

@@ -1,5 +1,5 @@
 const appId = '';//微信公众平台APPID
-const httpUrl = 'http://192.168.100.199:8000/';//正式接口
+const httpUrl = 'http://192.168.0.101:8000/';//正式接口
 // const httpUrl = 'http://b.ahjttd.com:81/';//正式接口
 const h5MapKey = '';//腾讯地图Key
 const debug = true;

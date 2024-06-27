@@ -2,12 +2,13 @@
 // var apiPath= 'http://localhost:49478/api/'
 
 import cfg from './config.js';
+import us from './user.js'
 
 
 function request(method, url, data, func, title) {
-
+	var that = this;
 	// let baseUrl =process.env.NODE_ENV === 'development' ? cfg['httpUrl'] :'http://localhost:3000'
-	// console.log('baseUrl',baseUrl)
+	
 
 	if (cfg.debug) {
 		console.log('原请求', data);
@@ -24,7 +25,8 @@ function request(method, url, data, func, title) {
 		method: method,
 		withCredentials: true,
 		header: {
-			'Content-Type': 'application/x-www-form-urlencoded'
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Authorization': us.token()
 		},
 		data: data,
 		success(res) {
@@ -75,7 +77,8 @@ function post_request(method, url, data, func, title) {
 		method: method,
 		// withCredentials: true,
 		header: {
-			'Content-Type': 'application/json;charset=UTF-8'
+			'Content-Type': 'application/json;charset=UTF-8',
+			'Authorization': us.token()
 		},
 		data: data,
 		success(res) {

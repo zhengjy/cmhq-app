@@ -159,10 +159,10 @@
 
 		<!-- <image src="/static/service.png"
 			style="width:120rpx;height: 150rpx;position: fixed;bottom: 50rpx;left:20rpx" @click="makePhone"></image> -->
-<!-- 
+
 		<u-popup mode="bottom" :show="!isLogin" round="10">
 			<login @success="loginClose" :userPid="uid"></login>
-		</u-popup> -->
+		</u-popup>
 
 		<u-picker :show="show" :columns="columns" @confirm="firmPicker" @cancel="show=false"></u-picker>
 
@@ -170,7 +170,7 @@
 </template>
 
 <script>
-	import login from '../../components/login/login.vue'
+	import login from '../../pages/login/login.vue'
 	export default {
 		components: {
 			login

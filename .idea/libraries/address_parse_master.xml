@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="address-parse-master">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/static/kuaidi/address-parse-master.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

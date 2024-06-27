@@ -108,7 +108,7 @@
 				var that = this;
 				that.list = [];
 				that.$http.get('ziaddress/list', {
-					companyId: 90,
+					companyId: that.$us.getCompanyId(),
 					pageNo: 1,
 					pageSize: 20
 				}, function(res) {

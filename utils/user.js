@@ -4,7 +4,18 @@ export default {
 	getId: function() {
 		var info = this.getUserInfo();
 		if (info.id)
-			return this.getUserInfo().userGuid;
+			return this.getUserInfo().id;
+		else
+			return '';
+	},
+	token: function() {
+			return this.getUserInfo().token;
+		
+	},
+	getCompanyId: function() {
+		var info = this.getUserInfo();
+		if (info.id)
+			return this.getUserInfo().companyId;
 		else
 			return '';
 	},

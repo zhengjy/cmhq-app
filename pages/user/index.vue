@@ -86,7 +86,7 @@
 </template>
 
 <script>
-	import login from '../../components/login/login.vue'
+	import login from '../../pages/login/login.vue'
 	export default {
 		components: {
 			login
