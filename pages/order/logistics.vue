@@ -1,7 +1,7 @@
 <template>
 	<view class="w94" style="margin-top: 50rpx;">
 		<u-steps current="1" direction="column">
-			<u-steps-item v-for=" [key, value] in orTraces" :key="index" :title="item.key" :desc="$uti.dateFormat(item.AcceptTime,'MM-dd hh:mm')"></u-steps-item>
+			<u-steps-item v-for="(val,key) in orTraces" :key="index" :title="val" :desc="key"></u-steps-item>
 		</u-steps>
 	</view>
 </template>

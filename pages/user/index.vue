@@ -14,7 +14,7 @@
 				<view style="margin-left: 14rpx;" v-else>
 					<view style="font-size: 36rpx;font-weight: bold;color:#000;">未登录</view>
 					<view style="font-size: 28rpx;color:#323232;">ID:0000</view>
-				</view>
+				y</view>
 			</view>
 			<view>
 				<u-icon name="arrow-right" color="#000" size="14"></u-icon>
@@ -180,17 +180,17 @@
 			},
 			getUserInfo() {
 				var that = this;
-				that.$http.post('User/UserInfo', {
-					userGuid: that.$us.getId()
-				}, function(res) {
-					if (res.StatusCode == 1) {
-						that.userInfo = res.Data;
-					} else {
-						that.$uti.alert(res.Message);
-						uni.clearStorageSync();
-						that.isLogin = false;
-					}
-				})
+				// that.$http.post('User/UserInfo', {
+				// 	userGuid: that.$us.getId()
+				// }, function(res) {
+				// 	if (res.StatusCode == 1) {
+				// 		that.userInfo = res.Data;
+				// 	} else {
+				// 		that.$uti.alert(res.Message);
+				// 		uni.clearStorageSync();
+				// 		that.isLogin = false;
+				// 	}
+				// })
 			}
 		},
 		onShareAppMessage(res) {

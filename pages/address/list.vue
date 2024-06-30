@@ -22,9 +22,9 @@
 					</view>
 				</view> -->
 					</view>
-					<u-icon name="edit-pen" @click="$uti.toPage('/pages/address/edit',{id:item.id})"
+					<!-- <u-icon name="edit-pen" @click="$uti.toPage('/pages/address/edit',{id:item.id})"
 						:customStyle="{'position':'absolute','right':'20rpx','top':'30%'}" size="30" color="#999">
-					</u-icon>
+					</u-icon> -->
 				</view>
 			</u-swipe-action-item>
 		</u-swipe-action>

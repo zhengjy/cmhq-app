@@ -73,6 +73,13 @@
 				"navigationStyle": "custom"
 				//#endif
 			}
+		},
+		{
+			"path" : "pages/test/input/input",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
 	],
 	"globalStyle": {

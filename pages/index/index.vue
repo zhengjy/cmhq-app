@@ -67,11 +67,15 @@
 					labelSize="12"></u-icon>
 			</view>
 		</view>
-
 		<view class="template-view">
 			<u-cell-group :border="false">
-				<u-cell :border="false" title="类型" :customStyle="{'padding':'20rpx 0rpx;'}">
+				<u-cell :border="false" title="商品名称" :customStyle="{'padding':'20rpx 0rpx;'}">
+					<!-- <view slot="right-icon" va style="position: fixed; left: 20px;">
+					    <input v-model="searchInput" placeholder="输入搜索关键字" />
+					    <u-picker :data="filteredData" @change="handlePickerChange"></u-picker>
+					</view> -->
 					<view slot="right-icon" @click="show=true">
+						
 						<u-icon name="arrow-right" :label="file" labelPos="left" size="16"></u-icon>
 						<!-- <view class="flex-end items-center" style="flex-wrap: wrap;">
 							<view style="margin-bottom: 10rpx;margin-left: 10rpx;" v-for="(item,index) in columns[0]" :key="index">
@@ -117,6 +121,7 @@
 					labelSize="12"></u-icon> -->
 			</view>
 		</view>
+		<button @click="$uti.toPage('/pages/test/input/input')">测试</button>
 
 		<!-- <view class="flex-center items-center"
 			style="width:100%;margin:0 auto;color:#999;text-align: center;padding-top:20rpx;font-size: 26rpx;">
@@ -179,7 +184,7 @@
 			return {
 				show: false,
 				columns: [
-					['日用品', '文件', '化妆品', '图书', '衣服鞋帽', '箱包', '其他']
+					[]
 				],
 				file: '请选择',
 				length: 1,
@@ -207,6 +212,21 @@
 					withShareTicket: true,
 					menus: ["shareAppMessage", "shareTimeline"]
 				})
+				
+				that.$http.get('product/list', {
+					companyId: that.$us.getCompanyId(),
+					pageNo: 1,
+					pageSize: 2000
+				}, function(res) {
+					console.info(res)
+					if (res.code == 'success') {
+						// that.columns = 
+					} 
+				
+					
+				})
+				
+				
 			}
 			// console.log('是否登陆', that.isLogin)
 		},
@@ -219,14 +239,28 @@
 				var that = this;
 				that.isLogin = true;
 				
-				// that.isLogin = that.$us.checkLogin();
+				that.isLogin = that.$us.checkLogin();
 				that.file = (uni.getStorageSync('filePicker') || '请选择');
 				if (that.isLogin) {
+					that.$http.get('product/list', {
+						companyId: that.$us.getCompanyId(),
+						pageNo: 1,
+						pageSize: 2000
+					}, function(res) {
+						console.info(res)
+						if (res.code == 'success') {
+							 that.columns =  [res.data.items.map(item => item.categoryName)];
+							 console.log("aaaa",that.columns)
+
+						} 
+					
+						
+					})
+					
 					that.reloadAddress('seller');
 					that.reloadAddress('query');
 				}
 
-				this.xieyi = uni.getStorageSync('xieyi') || 'null';
 			},
 			firmPicker(e) {
 				console.log('firmPicker', e)
@@ -251,7 +285,7 @@
 				}
 				this[name] = uni.getStorageSync(name) || [];
 
-				if (this.seller &&  this.query ) {
+				if (this.seller  != null &&  this.query != null ) {
 					// that.$http.post('Order/AreaVerification', {
 					// 	r_ProvinceName: that.query.adProvince,
 					// 	r_CityName: that.query.adCity,
@@ -293,46 +327,44 @@
 						if (res.code == 'success') {
 							let item ={ "totalFee": res.data.totalPrice, "name": '京东',"info" :res.data.info, "icon":'/static/kuaidi/st.jpg' }
 							that.logList.push(item);
-						} else {
-							that.$uti.alert(res.Message);
-						}
+						} 
 					}, '加载中...')
 				}
 			},
 			createOrder(code) {
 				var that = this;
-				console.log('协议', that.xieyi)
-				if (that.xieyi != 'success') {
-					that.$uti.alert('请阅读并同意用户协议');
-					return;
-				}
-
-				if (that.file == '请选择') {
-					that.$uti.alert('请选择类型');
-					return;
-				}
 
 				if (this.seller  && this.query ) {
-					that.$http.post('Order/PayOrder', {
+					that.$http.post('courierOrder/create', {
 						userGuid: that.$us.getId(),
-						orShipperCode: code,
-						orRName: that.query.adName,
-						orRMobile: that.query.adMobile,
-						orRProvinceName: that.query.adProvince,
-						orRCityName: that.query.adCity,
-						orRExpAreaName: that.query.adArea,
-						orRAddress: that.query.adDetail + that.query.adHouseNumber,
-						orSName: that.seller.adName,
-						orSMobile: that.seller.adMobile,
-						orSProvinceName: that.seller.adProvince,
-						orSCityName: that.seller.adCity,
-						orSExpAreaName: that.seller.adArea,
-						orSAddress: that.seller.adDetail + that.seller.adHouseNumber,
-						orWeight: that.weight,
-						orCGoodsName: that.file
+						fromName: that.seller.name,
+						fromMobile: that.seller.mobile,
+						fromProv: that.seller.province,
+						fromCity: that.seller.city,
+						fromArea: that.seller.area,
+						fromAddress: that.seller.address,
+						toName: that.query.name,
+						toMobile: that.query.mobile,
+						toProv: that.query.province,
+						toCity: that.query.city,
+						toArea: that.query.area,
+						toAddress: that.query.address,
+						goodsName: that.seller.adDetail + that.seller.adHouseNumber,
+						weight: that.weight,
+						width: that.weight,
+						length: that.weight,
+						height: that.weight,
+						goodsName: that.file
 					}, function(res) {
-						if (res.StatusCode == 1) {
-							that.weChatPay(res.Data);
+						if (res.code == 'success') {
+							uni.showToast({
+								title: '下单成功！',
+								duration: 2000
+							});
+							uni.reLaunch({
+								url: '/pages/order/list'
+							})
+							// that.weChatPay(res.Data);
 						} else {
 							that.$uti.alert(res.Message);
 						}

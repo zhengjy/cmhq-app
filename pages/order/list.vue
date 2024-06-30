@@ -10,7 +10,7 @@
 
 				<view class="flex-between items-center">
 					<view class="font-def">快递单号：{{item.courierCompanyWaybillNo}}</view>
-					<view class="font-def">{{item.courierCompanyCode}}快递{{item.id}}</view>
+					<view class="font-def">{{item.courierCompanyCode}}快递</view>
 				</view>
 
 				<view class="flex-around items-center" style="margin-top: 20rpx;">
