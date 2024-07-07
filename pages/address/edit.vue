@@ -22,8 +22,13 @@
 				<view style="width:10%;color:#999;display: flex;align-items: center;justify-content:center;">
 					<u-icon v-if="item.type=='map'" name="map-fill" size="20" @click="showMap=true"></u-icon>
 				</view>
+				
 			</view>
-
+					<view>
+				        <button @tap="open">打开</button>
+				        <cityPicker :column="column" :default-value="defaultValue" :mask-close-able="maskCloseAble" @confirm="confirm" @cancel="cancel" :visible="visible"/>
+				        <view>{{str}}</view>
+				    </view>
 			<!-- <view class="w94 flex-between items-center" style="padding:10rpx 0rpx;">
 				<view style="width:20%;color:#505050;text-align: left;">
 					设为默认
@@ -48,13 +53,23 @@
 
 <script>
 	import selectLoc from '../../components/selectLoc/selectLoc.vue'
+	    import cityPicker from '@/uni_modules/piaoyi-cityPicker/components/piaoyi-cityPicker/piaoyi-cityPicker'
+
 	import AddressParse from 'address-parse';
 	export default {
 		components: {
-			selectLoc
+			selectLoc,
+			cityPicker
 		},
 		data() {
 			return {
+				visible: false,
+				                maskCloseAble: true,
+				                str: '',
+				                defaultValue: '',
+				                // defaultValue: ['河北省','唐山市','丰南区'],
+				                column: 3,
+					
 				showMap: false,
 				id: 0,
 				isDef: false,
@@ -119,6 +134,36 @@
 			}
 		},
 		methods: {
+			open () {
+			                this.visible = true
+			            },
+			            confirm (val) {
+			                console.log(val)
+			                this.str = JSON.stringify(val)
+			                this.visible = false
+			            },
+			            cancel () {
+			                this.visible = false
+			            },
+						onShareAppMessage(res) {
+						            if (res.from === 'button') { // 来自页面内分享按钮
+						                console.log(res.target)
+						            }
+						            return {
+						                title: 'data-cityPicker省市区地址选择器！',
+						                path: '/pages/cityPicker/cityPicker'
+						            }
+						        },
+						        onShareTimeline(res) {
+						            if (res.from === 'button') { // 来自页面内分享按钮
+						                console.log(res.target)
+						            }
+						            return {
+						                title: 'data-cityPicker省市区地址选择器！'
+						            }
+						        },
+
+						
 			getClipInfo() {
 				var that = this;
 				uni.getClipboardData({

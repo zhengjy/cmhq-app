@@ -1,0 +1,40 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* 根据需要设置样式 */
+.u-picker .u-picker-content .u-popup {
+    height: 100%;
+	color: blue;
+}
+

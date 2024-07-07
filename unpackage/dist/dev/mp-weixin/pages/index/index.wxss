@@ -1,0 +1,33 @@
+.template-view{
+	width:90%;
+	margin: 0 auto;
+	border-radius: 20rpx;
+	background: #fff;
+	padding:20rpx;
+	margin-top: 20rpx;
+}
+.address-view{
+	width:100%;
+}
+.address-tag{
+	width:40rpx;
+	height: 40rpx;
+	line-height: 40rpx;
+	text-align: center;
+	border-radius: 50%;
+	font-size: 24rpx;
+}
+.user-info{
+	font-weight: bold;
+	font-size: 32rpx;
+}
+.address-info{
+	font-size: 26rpx;
+	color:#999;
+	margin-top: 10rpx;
+}
+.main-box {
+  display: flex;
+  justify-content: space-between;
+}
+

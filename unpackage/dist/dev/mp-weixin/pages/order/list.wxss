@@ -1,0 +1,24 @@
+
+.template-view {
+	width: 90%;
+	margin: 0 auto;
+	border-radius: 20rpx;
+	background: #fff;
+	padding: 20rpx;
+	margin-top: 20rpx;
+}
+.address-city {
+	font-weight: bold;
+	font-size: 32rpx;
+	text-align: center;
+}
+.address-name {
+	font-size: 26rpx;
+	color: #999;
+	text-align: center;
+}
+.font-def {
+	font-size: 26rpx;
+	color: #999;
+}
+

@@ -1,0 +1,42 @@
+
+page {
+	background: #eeeeee52;
+}
+.bgwhite {
+	background: #fff;
+}
+.user-box {
+
+
+
+
+	padding-top: 100rpx;
+}
+.head-img {
+	width: 150rpx;
+	height: 150rpx;
+	border-radius: 50%;
+}
+.grid-text {
+	font-size: 24rpx;
+	margin-top: 12rpx;
+	color: #000;
+}
+.sm-item {
+	width: 25%;
+	flex-direction: column;
+}
+.sm-item-title {
+	font-weight: bold;
+	font-size: 32rpx;
+	color: #000;
+}
+.sm-item-tips {
+	font-size: 24rpx;
+	color: #999;
+	margin-top: 10rpx;
+}
+.sm_cur {
+	color: #2d80fd
+}
+

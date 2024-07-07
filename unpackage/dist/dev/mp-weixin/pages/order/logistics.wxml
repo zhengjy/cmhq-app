@@ -1,0 +1,1 @@
+<view class="w94" style="margin-top:50rpx;"><u-steps vue-id="733399fd-1" current="1" direction="column" bind:__l="__l" vue-slots="{{['default']}}"><block wx:for="{{orTraces}}" wx:for-item="val" wx:for-index="key" wx:key="*this"><u-steps-item vue-id="{{('733399fd-2-'+key)+','+('733399fd-1')}}" title="{{val}}" desc="{{key}}" bind:__l="__l"></u-steps-item></block></u-steps></view>

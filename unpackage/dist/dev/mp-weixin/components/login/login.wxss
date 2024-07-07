@@ -1,0 +1,12 @@
+
+.bottom-view {
+	width: 90%;
+	background: #3c9cff;
+	color: #fff;
+	height: 80rpx;
+	line-height: 80rpx;
+	text-align: center;
+	font-size: 30rpx;
+	border-radius: 10rpx;
+}
+

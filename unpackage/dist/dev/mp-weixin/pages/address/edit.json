@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "地址编辑",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-textarea": "/uni_modules/uview-ui/components/u-textarea/u-textarea",
+    "u-tag": "/uni_modules/uview-ui/components/u-tag/u-tag",
+    "u-input": "/uni_modules/uview-ui/components/u-input/u-input",
+    "u-icon": "/uni_modules/uview-ui/components/u-icon/u-icon",
+    "select-loc": "/components/selectLoc/selectLoc",
+    "city-picker": "/uni_modules/piaoyi-cityPicker/components/piaoyi-cityPicker/piaoyi-cityPicker"
+  }
+}

@@ -70,20 +70,25 @@
 		<view class="template-view">
 			<u-cell-group :border="false">
 				<u-cell :border="false" title="商品名称" :customStyle="{'padding':'20rpx 0rpx;'}">
-					<!-- <view slot="right-icon" va style="position: fixed; left: 20px;">
-					    <input v-model="searchInput" placeholder="输入搜索关键字" />
-					    <u-picker :data="filteredData" @change="handlePickerChange"></u-picker>
-					</view> -->
-					<view slot="right-icon" @click="show=true">
-						
-						<u-icon name="arrow-right" :label="file" labelPos="left" size="16"></u-icon>
-						<!-- <view class="flex-end items-center" style="flex-wrap: wrap;">
-							<view style="margin-bottom: 10rpx;margin-left: 10rpx;" v-for="(item,index) in columns[0]" :key="index">
-								<u-tag type="primary" :plain="true"
-									:text="item" size="mini"></u-tag>
-							</view>
-						</view> -->
-					</view>
+					<view slot="right-icon">
+					    <view class="main">
+					      <view class="main-box">
+					        <text></text>
+					        <zqs-select
+					          :multiple="false"
+					          :list="options"
+					          label-key="label"
+					          value-key="value"
+					          placeholder=" 请选择授权联系人"
+					          title="选择授权联系人"
+					          clearable
+					          v-model="checkUserList"
+					          @search="searchEvent"
+					          @change="selectChange2"
+					        ></zqs-select>
+					      </view>
+					    </view>
+					  </view>
 				</u-cell>
 				<u-cell :border="false" title="重量(KG)" :customStyle="{'padding':'20rpx 0rpx;'}">
 					<view slot="right-icon">
@@ -176,12 +181,23 @@
 
 <script>
 	import login from '../../pages/login/login.vue'
+	import zqsSelect from '@/components/zqs-select/zqs-select.vue'
 	export default {
 		components: {
-			login
+			login,
+			zqsSelect
 		},
 		data() {
 			return {
+				checkUserList: [],
+				      importUserId: [],
+				      goodsName: '',
+				      options: [
+				        {
+				          label: '灯具',
+				          value: '灯具',
+				        }
+				      ],
 				show: false,
 				columns: [
 					[]
@@ -235,6 +251,15 @@
 			that.isLogin = that.$us.checkLogin();
 		},
 		methods: {
+			selectChange2(val) {
+				this.goodsName = val.value
+			      // 此处为点击的事件
+			},
+			searchEvent(val) {
+			  this.options = this.options.filter(option => option.label.includes(val));
+			},
+
+			
 			init() {
 				var that = this;
 				that.isLogin = true;
@@ -249,8 +274,13 @@
 					}, function(res) {
 						console.info(res)
 						if (res.code == 'success') {
-							 that.columns =  [res.data.items.map(item => item.categoryName)];
-							 console.log("aaaa",that.columns)
+							 const objectList = res.data.items.map(item => {
+							   return {
+								 label: item.categoryName,
+								 value: item.categoryName
+							   };
+							 });
+							 that.options = objectList;
 
 						} 
 					
@@ -436,4 +466,9 @@
 
 <style>
 	@import url('index.css');
+	
+	.main-box {
+	  display: flex;
+	  justify-content: space-between;
+	}
 </style>

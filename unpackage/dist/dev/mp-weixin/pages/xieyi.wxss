@@ -1,0 +1,9 @@
+
+.title{
+	font-weight: bold;
+	margin-bottom: 40rpx;
+}
+.item{
+	margin-bottom: 20rpx;
+}
+

@@ -1,0 +1,77 @@
+@charset "UTF-8";
+/* 头部样式 */
+.header.data-v-b237504c {
+  margin: 46rpx 0 94rpx 41rpx;
+}
+.header .title.data-v-b237504c {
+  font-size: 60rpx;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #272729;
+  text-align: left;
+}
+.header .info.data-v-b237504c {
+  font-size: 26rpx;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-weight: 500;
+}
+/* 登录样式 */
+.login.data-v-b237504c {
+  margin-left: 41rpx;
+  margin-right: 53rpx;
+}
+.login .item.data-v-b237504c {
+  border-bottom: 1px solid #e1e1e6;
+  margin-bottom: 47rpx;
+  padding-bottom: 17rpx;
+}
+.login .item .title.data-v-b237504c {
+  font-size: 30rpx;
+  font-family: PingFang SC-Bold, PingFang SC;
+  font-weight: bold;
+  color: #272729;
+  margin-bottom: 34rpx;
+}
+.login .item .title image.data-v-b237504c {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 12rpx;
+}
+.login .item input.data-v-b237504c {
+  width: 100%;
+  height: 42rpx;
+  font-size: 30rpx;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+}
+.submit.data-v-b237504c {
+  margin-top: 49rpx;
+  margin-bottom: 128rpx;
+  width: 656rpx;
+  height: 88rpx;
+  background: linear-gradient(270deg, #ff0000 0%, #fe5454 100%);
+  border-radius: 70rpx 70rpx 70rpx 70rpx;
+  font-size: 32rpx;
+  font-family: PingFang SC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+}
+.other .title.data-v-b237504c {
+  font-size: 24rpx;
+  font-family: PingFang-SC-Medium-, PingFang-SC-Medium;
+  font-weight: normal;
+  color: #aeaebd;
+  margin-bottom: 29rpx;
+}
+.other .wechat image.data-v-b237504c {
+  width: 76rpx;
+  height: 76rpx;
+  margin-bottom: 13rpx;
+}
+.other .wechat .info.data-v-b237504c {
+  font-size: 24rpx;
+  font-family: PingFang SC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #272729;
+}
+
